@@ -129,4 +129,10 @@ body{
       color: #fff;
     }
 
-  
+  .message {
+    width: 50;
+    color: navy;
+    margin-top: 30px;
+    font-size: 15px;
+    text-align: center;
+  }

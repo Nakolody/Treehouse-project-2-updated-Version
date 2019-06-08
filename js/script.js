@@ -1,9 +1,8 @@
 
 const ul = document.getElementById('students');
-const input = document.getElementById('searchBar');
-const search = input.value; 
+const input = document.getElementsByClassName('student-search')[0];
 const li = ul.getElementsByTagName('li');
-const button = document.getElementById('submit');
+const searchButton = document.getElementsByClassName('student-search')[1];
 const studentList = document.getElementsByClassName('student-item');
 const pageFromBody = document.querySelector('.page');
 
@@ -41,46 +40,36 @@ function page(list){
          })
       }
 }
-
+//Shows current Index
 showPage(studentList,1);
+//Paginates list
 page(studentList);
-
-//Add event handler for the submit button
-button.addEventListener('click',()=>{
-   searchFunction();
-});
-
-//Add event handler for the input
-input.addEventListener('keyup',()=>{
-   searchFunction();
-   changeBackground();
-})
+//Dynamically creates Search Input with Javascript
+createSearch();
 
 //Search function to filter out revalent data
 function searchFunction (){
    let textArray = document.querySelectorAll('h3');
    for(let i = 0; i < li.length;  i +=1 ){
       let textToSearch = textArray[i].textContent.toLowerCase();
-      const search = input.value.toLowerCase();
+      const search = searchInput.value.toLowerCase();
          li[i].classList.remove('student-item');
+      
       if (textToSearch.includes(search) || search == "" ){
          li[i].classList.add('student-item');
          li[i].classList.remove('none');
-      } else {
+         } else {
          li[i].classList.add('none');
+         }
       }
-   }
+      if(studentList.length === 0){
+         message = document.createElement('li');
+         message.textContent = "There are no students by that name";
+         message.setAttribute('class','message');
+         ul.appendChild(message);
+      }
    page(studentList);
    removePage();
-}
-
-// Changes background when text is entered.
-function changeBackground(){
-   if (input.value == ""){
-      input.style.backgroundColor="white";
-   }else {
-      input.style.backgroundColor='#d1eff9';
-   }
 }
 
 //Removes pages for search function to append the right pages.
@@ -88,4 +77,31 @@ function changeBackground(){
 function removePage(){
   const paginationDiv = document.getElementsByClassName('pagination');
   pageFromBody.removeChild(paginationDiv[0]);
+}
+//Dynamically creates Search input and button with Javascript
+function createSearch(){
+   pageHeader = document.getElementsByClassName('page-header')[0];
+   searchInput = document.createElement('input');
+
+   searchInput.setAttribute('type','text');
+   searchInput.setAttribute('placeholder',"Enter Student's Name");
+   searchInput.setAttribute('class','student-search');
+   pageHeader.appendChild(searchInput);
+
+   let searchButton = document.createElement('button');
+   searchButton.textContent = "Search";
+   searchButton.setAttribute('class','student-search');
+   pageHeader.appendChild(searchButton);
+
+   searchButton.addEventListener('click',()=>{
+      searchFunction();
+   });
+   searchInput.addEventListener('keyup',()=>{
+      searchFunction();
+   })
+   // searchInput.setAttribute('type','text');
+   // searchInput.setAttribute('vale','default');
+   // searchInput.setAttribute('class','student-search');
+   //pageHeader.appendChild(searchInput);
+
 }
