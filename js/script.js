@@ -35,6 +35,11 @@ function page(list){
          div.appendChild(pageNumber);
 
          pageNumber.addEventListener('click',()=>{
+            divAnchor = document.getElementsByTagName('a')
+            for(let k = 0; k < divAnchor.length; k +=1){
+               divAnchor[k].classList.value = ""
+            }
+            pageNumber.setAttribute('class','active');
             let numberOfPage = parseInt(pageNumber.innerHTML);
             showPage(studentList,numberOfPage);
          })
@@ -52,15 +57,12 @@ function searchFunction (){
    let textArray = document.querySelectorAll('h3');
    for(let i = 0; i < li.length;  i +=1 ){
       let textToSearch = textArray[i].textContent.toLowerCase();
-      const search = searchInput.value.toLowerCase();
+      const search = searchInput.value;
          li[i].classList.remove('student-item');
       
-      if (textToSearch.includes(search) || search == "" ){
+      if (textToSearch.includes(search.toLowerCase()) || search == "" ){
          li[i].classList.add('student-item');
          li[i].classList.remove('none');
-            if(typeof(message) != 'undefined' && message != null){
-               ul.removeChild(message);
-            }
          } else {
          li[i].classList.add('none');
          }
@@ -71,6 +73,10 @@ function searchFunction (){
          message.setAttribute('class','message');
          ul.appendChild(message);
       }
+      if(studentList.length > 0 && typeof(message) != 'undefined' && message != null){
+         ul.removeChild(message);
+      }
+
    page(studentList);
    removePage();
 }
