@@ -58,6 +58,9 @@ function searchFunction (){
       if (textToSearch.includes(search) || search == "" ){
          li[i].classList.add('student-item');
          li[i].classList.remove('none');
+            if(typeof(message) != 'undefined' && message != null){
+               ul.removeChild(message);
+            }
          } else {
          li[i].classList.add('none');
          }
@@ -99,9 +102,4 @@ function createSearch(){
    searchInput.addEventListener('keyup',()=>{
       searchFunction();
    })
-   // searchInput.setAttribute('type','text');
-   // searchInput.setAttribute('vale','default');
-   // searchInput.setAttribute('class','student-search');
-   //pageHeader.appendChild(searchInput);
-
 }
