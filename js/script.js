@@ -10,7 +10,7 @@ const pageFromBody = document.querySelector('.page');
 const message = document.createElement('p');
 message.textContent = 'No students found.';
 message.style.display = 'none';
-
+message.setAttribute('class','message');
 pageFromBody.appendChild(message);
 
 //Function to only show index of pages
