@@ -6,6 +6,13 @@ const searchButton = document.getElementsByClassName('student-search')[1];
 const studentList = document.getElementsByClassName('student-item');
 const pageFromBody = document.querySelector('.page');
 
+// Appends <p> tag element to page for search function. Will apply appear if studentList.length is 0
+const message = document.createElement('p');
+message.textContent = 'No students found.';
+message.style.display = 'none';
+
+pageFromBody.appendChild(message);
+
 //Function to only show index of pages
 function showPage(list,page){
    let startIndex= (page*10)-10;
@@ -67,16 +74,11 @@ function searchFunction (){
          li[i].classList.add('none');
          }
       }
-      if(studentList.length === 0){
-         message = document.createElement('li');
-         message.textContent = "There are no students by that name";
-         message.setAttribute('class','message');
-         ul.appendChild(message);
+      if (studentList.length == 0){
+         message.style.display = 'block';
+      }else {
+         message.style.display = 'none';
       }
-      if(studentList.length > 0 && typeof(message) != 'undefined' && message != null){
-         ul.removeChild(message);
-      }
-
    page(studentList);
    removePage();
 }
