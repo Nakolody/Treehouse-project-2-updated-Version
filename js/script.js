@@ -1,61 +1,20 @@
-/******************************************
-Treehouse Techdegree:
-FSJS project 2 - List Filter and Pagination
-******************************************/
-   
-// Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
 
-
-/*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
-   
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
-***/
-
-
-
-
-/*** 
-   Create the `showPage` function to hide all of the items in the 
-   list except for the ten you want to show.
-
-   Pro Tips: 
-     - Keep in mind that with a list of 54 students, the last page 
-       will only display four.
-     - Remember that the first student has an index of 0.
-     - Remember that a function `parameter` goes in the parens when 
-       you initially define the function, and it acts as a variable 
-       or a placeholder to represent the actual function `argument` 
-       that will be passed into the parens later when you call or 
-       "invoke" the function 
-***/
-
-
-
-
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
-
-
-
-
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
 const ul = document.getElementById('students');
-const input = document.getElementById('searchBar');
-const search = input.value; 
+const input = document.getElementsByClassName('student-search')[0];
 const li = ul.getElementsByTagName('li');
-const button = document.getElementById('submit');
+const searchButton = document.getElementsByClassName('student-search')[1];
 const studentList = document.getElementsByClassName('student-item');
-//li[0].firstElementChild.nextElementSibling
+const pageFromBody = document.querySelector('.page');
 
+// Appends <p> tag element to page for search function. Will apply appear if studentList.length is 0
+const message = document.createElement('p');
+message.textContent = 'No students found.';
+message.style.display = 'none';
+message.setAttribute('class','message');
+pageFromBody.appendChild(message);
+
+
+//Function to only show index of pages
 function showPage(list,page){
    let startIndex= (page*10)-10;
    let endIndex = (page*10);
@@ -70,9 +29,8 @@ function showPage(list,page){
 
 }
 
+//Function to calculate number of pages.
 function page(list){
-      
-      const pageFromBody = document.querySelector('.page');
       const div = document.createElement('div');
       div.classList.add('pagination');
       pageFromBody.appendChild(div);
@@ -81,60 +39,81 @@ function page(list){
       for(let i = 1; i <= numberOfPages; i+=1 ){
          let pageNumber = document.createElement('a');
          pageNumber.innerHTML = i;
-         // pageNumber.classList.add('pagination');
          pageNumber.setAttribute('href','#');
          div.appendChild(pageNumber);
 
          pageNumber.addEventListener('click',()=>{
+            divAnchor = document.getElementsByTagName('a')
+            for(let k = 0; k < divAnchor.length; k +=1){
+               divAnchor[k].classList.value = ""
+            }
+            pageNumber.setAttribute('class','active');
             let numberOfPage = parseInt(pageNumber.innerHTML);
-            // let spanLink = document.createElement('span');
-            // spanLink.textContent = pageNumber.innerHTML;
-            // div.insertBefore(spanLink,pageNumber);
-            // div.removeChild(pageNumber);
             showPage(studentList,numberOfPage);
          })
       }
-
-
 }
+//Shows current Index
 showPage(studentList,1);
+//Paginates list
 page(studentList);
+//Dynamically creates Search Input with Javascript
+createSearch();
 
-button.addEventListener('click',()=>{
-   
-   for(let i = 0; i < li.length;  i +=1 ){
-      let textToSearch = li[i].firstElementChild.firstElementChild.nextElementSibling.textContent;
-      const search = input.value.toLowerCase();
-      if (textToSearch.toLowerCase().includes(search) || search == "" ){
-         li[i].style.display = "";
-      } else {
-         li[i].style.display = "none";
-      }
-   }
-});
-console.log(input,"I AM HERE");
-input.addEventListener('keyup',()=>{
-   searchFunction();
-   changeBackground();
-})
+//Search function to filter out revalent data
 function searchFunction (){
+   let textArray = document.querySelectorAll('h3');
    for(let i = 0; i < li.length;  i +=1 ){
-      let textToSearch = li[i].firstElementChild.firstElementChild.nextElementSibling.textContent;
-      const search = input.value.toLowerCase();
-      if (textToSearch.toLowerCase().includes(search) || search == "" ){
-         li[i].style.display = "";
-      } else {
-         li[i].style.display = "none";
+      let textToSearch = textArray[i].textContent.toLowerCase();
+      const search = searchInput.value;
+         li[i].classList.remove('student-item');
+      
+      if (textToSearch.includes(search.toLowerCase()) || search == "" ){
+         li[i].classList.add('student-item');
+         li[i].classList.remove('none');
+         } else {
+         li[i].classList.add('none');
+         }
       }
-   }
-
+      if (studentList.length == 0){
+         message.style.display = 'block';
+      }else {
+         message.style.display = 'none';
+      }
+   page(studentList);
+   removePage();
 }
 
+//Removes pages for search function to append the right pages.
 
-function changeBackground(){
-   if (input.value == ""){
-      input.style.backgroundColor="white";
-   }else {
-      input.style.backgroundColor='#d1eff9';
-   }
+function removePage(){
+  const paginationDiv = document.getElementsByClassName('pagination');
+  pageFromBody.removeChild(paginationDiv[0]);
+}
+//Dynamically creates Search input and button with Javascript
+function createSearch(){
+   pageHeader = document.getElementsByClassName('page-header')[0];
+   searchInput = document.createElement('input');
+
+   searchInput.setAttribute('type','text');
+   searchInput.setAttribute('placeholder',"Enter Student's Name");
+   searchInput.setAttribute('class','student-search');
+   pageHeader.appendChild(searchInput);
+
+   let searchButton = createElement('button','student-search','Search','pageHeader');
+   pageHeader.appendChild(searchButton);
+
+   searchButton.addEventListener('click',()=>{
+      searchFunction();
+   });
+   searchInput.addEventListener('keyup',()=>{
+      searchFunction();
+   })
+}
+//Function to create Element
+function createElement(elementType,value,text){
+   element = document.createElement(elementType);
+   element.setAttribute('class',value);
+   element.textContent = text;
+   return element;
 }
