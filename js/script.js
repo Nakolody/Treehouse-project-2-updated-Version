@@ -52,9 +52,9 @@ function page(list){
             showPage(studentList,numberOfPage);
          })
       }
+      showPage(studentList,1);
 }
-//Shows current Index
-showPage(studentList,1);
+
 //Paginates list
 page(studentList);
 //Dynamically creates Search Input with Javascript
