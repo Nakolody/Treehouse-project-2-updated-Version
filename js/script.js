@@ -41,6 +41,9 @@ function page(list){
          pageNumber.innerHTML = i;
          pageNumber.setAttribute('href','#');
          div.appendChild(pageNumber);
+         if(i == 1){
+            pageNumber.setAttribute('class','active');
+         }
 
          pageNumber.addEventListener('click',()=>{
             divAnchor = document.getElementsByTagName('a')
@@ -104,7 +107,7 @@ function createSearch(){
    pageHeader.appendChild(searchButton);
 
    searchButton.addEventListener('click',()=>{
-      searchFunction();
+      searchFunction();``
    });
    searchInput.addEventListener('keyup',()=>{
       searchFunction();
